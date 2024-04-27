@@ -1,8 +1,13 @@
 [package]
 name = "rhinopuffin"
-description = "simple symmetric encryption"
 version = "0.2.0"
 edition = "2021"
+description = "Simple symmetric encryption."
+repository = "https://github.com/ArielHorwitz/rhinopuffin/"
+keywords = [
+    "encryption",
+    "symmetric",
+]
 
 [dependencies]
 aes-gcm = "0.10.3"
