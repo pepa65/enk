@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pepa65/enk/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/enk.svg)](https://crates.io/crates/enk)
 
-# enk 0.3.1
+# enk 0.3.2
 **Simple data en/decryption**
 
 * License: GPLv3.0
@@ -15,7 +15,7 @@
 
 ## Usage
 ```
-enk 0.3.1 - Simple data en/decryption
+enk 0.3.2 - Simple data en/decryption
 Usage: enk [OPTIONS] [FILE]
 Arguments:
   [FILE]  Input file (omit to read from stdin)
@@ -32,7 +32,7 @@ Options:
 ## Install
 ### Download static single-binary
 ```
-wget https://github.com/pepa65/enk/releases/download/0.3.1/enk
+wget https://github.com/pepa65/enk/releases/download/0.3.2/enk
 sudo mv enk /usr/local/bin
 sudo chown root:root /usr/local/bin/enk
 sudo chmod +x /usr/local/bin/enk
