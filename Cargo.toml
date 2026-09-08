@@ -1,6 +1,6 @@
 [package]
 name = "enk"
-version = "0.4.3"
+version = "1.0.0"
 edition = "2024"
 authors = ["Ariel Horwitz <ariel.ninja>", "github.com/pepa65 <pepa65@passchier.net>"]
 description = "Simple data en/decryption"
@@ -20,9 +20,10 @@ target-family = "Linux"
 target-arch = "X86_64"
 
 [dependencies]
-aes-gcm = "0.11.1"
-anyhow = "1.0.79"
-clap = { version = "4.4.18", features = ["derive"] }
-console = "0.16.2"
-rand = "0.10.2"
-sha2 = "0.11"
+aes-gcm = { version = "0.11", features = ["zeroize"] }
+anyhow = "1"
+argon2 = "0.6"
+clap = { version = "4", features = ["derive"] }
+console = "0.16"
+rand = "0.10"
+zeroize = "1"

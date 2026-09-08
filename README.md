@@ -5,26 +5,26 @@
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pepa65/enk/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/enk.svg)](https://crates.io/crates/enk)
 
-# enk 0.4.3
+# enk 1.0.0
 **Simple data en/decryption**
 
 * License: GPLv3.0
 * Authors: github.com/pepa65, Ariel Horwitz
 * Repo: https:/github.com/pepa65/enk
 * After: https://github.com/ArielHorwitz/rhinopuffin
+* Version 0 is obsolete and incompatible with version 1 (see below)
 
 ## Usage
 ```
-enk 0.4.3 - Simple data en/decryption
+enk 1.0.0 - Simple data en/decryption
 Usage: enk [OPTIONS] [FILE]
 Arguments:
   [FILE]  Input file (omit to read from stdin)
 
 Options:
   -d, --decrypt              Decrypt [default: encrypt]
-  -k, --keyfile <KEYFILE>    Use a file as encryption/decryption key
-  -p, --password <PASSWORD>  Password as argument (instead of prompting)
-  -r, --remove               Remove input file
+  -k, --keyfile <KEYFILE>    Use a file as the encryption/decryption secret
+  -r, --remove               Remove unencrypted input file after encryption
   -h, --help                 Print help
   -V, --version              Print version
 ```
@@ -72,3 +72,23 @@ Only a linux-x86_64 (musl) binary available: `cargo-binstall enk`
 
 Then `enk` will be installed in `~/.cargo/bin/` which will need to be added to `PATH`!
 
+## Encryption
+### File format `enk1`
+* 4 bytes magic ("enk1")
+* 16 bytes Argon2id salt (128 bits)
+* 12 bytes AES-256-GCM nonce (96 bits)
+* N bytes AES-256-GCM ciphertext
+* 16 bytes authentication tag (128 bits)
+
+### Key derivation
+* AES-256 key = Argon2id(secret, salt)
+
+### Encryption parameters for `enk1`
+* KDF Algorithm: Argon2id
+* Version: 1.3 (0x13)
+* Memory: 256 MiB (262144 KiB)
+* Time cost: 3
+* Parallelism: 1
+* Output: 32 bytes
+
+**The magic & salt are authenticated as AES-GCM AAD, the nonce by AES-GCM itself.**
