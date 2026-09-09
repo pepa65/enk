@@ -22,11 +22,11 @@ Arguments:
   [FILE]  Input file (omit to read from stdin)
 
 Options:
-  -d, --decrypt              Decrypt [default: encrypt]
-  -k, --keyfile <KEYFILE>    Use a file as the encryption/decryption secret
-  -r, --remove               Remove unencrypted input file after encryption
-  -h, --help                 Print help
-  -V, --version              Print version
+  -d, --decrypt            Decrypt [default: encrypt]
+  -k, --keyfile <KEYFILE>  Use a file as the encryption/decryption secret
+  -p, --password           Read password from stdin instead of prompting
+  -h, --help               Print help
+  -V, --version            Print version
 ```
 
 ## Install
