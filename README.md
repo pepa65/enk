@@ -16,6 +16,8 @@
   - To decrypt `version 0` encrypted files, use `enk 0.4.2` or earlier.
   - Use `version 1` going forward for more security.
   - See specs for `version 1` below.
+* Encryption and decryption happens in-memory, the whole input is read
+  into memory and the output is constructed in memory before writing out.
 
 ## Usage
 ```
