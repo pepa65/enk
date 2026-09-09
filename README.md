@@ -12,7 +12,10 @@
 * Authors: github.com/pepa65, Ariel Horwitz
 * Repo: https:/github.com/pepa65/enk
 * After: https://github.com/ArielHorwitz/rhinopuffin
-* Version 0 is obsolete and incompatible with version 1 (see below)
+* Version 0 is obsolete and incompatible with version 1
+  - To decrypt `version 0` encrypted files, use `enk 0.4.2` or earlier.
+  - Use `version 1` going forward for more security.
+  - See specs for `version 1` below.
 
 ## Usage
 ```
