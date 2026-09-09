@@ -87,7 +87,7 @@ Then `enk` will be installed in `~/.cargo/bin/` which will need to be added to `
 * KDF Algorithm: Argon2id
 * Version: 1.3 (0x13)
 * Memory: 256 MiB (262144 KiB)
-* Time cost: 3
+* Time cost: 9
 * Parallelism: 1
 * Output: 32 bytes
 

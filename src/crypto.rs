@@ -20,7 +20,7 @@ use zeroize::Zeroizing;
 // - Algorithm:   Argon2id
 // - Version:     1.3 (0x13)
 // - Memory:      256 MiB (262144 KiB)
-// - Time cost:   3
+// - Time cost:   9
 // - Parallelism: 1
 // - Output:      32 bytes
 //
@@ -32,9 +32,9 @@ const NONCE_SIZE: usize = 12; // 96-bit GCM nonce
 const KEY_SIZE: usize = 32; // 256-bit AES key
 const TAG_SIZE: usize = 16; // 128-bit GCM authentication tag
 const HEADER_SIZE: usize = MAGIC.len() + SALT_SIZE + NONCE_SIZE;
-const ARGON2_M_COST: u32 = 256 * 1024;
-const ARGON2_T_COST: u32 = 3;
-const ARGON2_P_COST: u32 = 1;
+const ARGON2_M_COST: u32 = 256 * 1024; // Memory cost
+const ARGON2_T_COST: u32 = 9; // Time cost
+const ARGON2_P_COST: u32 = 1; // Parallelism
 
 pub fn encrypt(plaintext: &[u8], secret: &[u8]) -> Result<Vec<u8>> {
 	if secret.is_empty() {
