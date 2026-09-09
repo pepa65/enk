@@ -40,12 +40,9 @@ struct Args {
 	/// Decrypt [default: encrypt]
 	#[arg(short, long)]
 	decrypt: bool,
-	/// Use the entire file as the encryption/decryption secret
+	/// Use file as the secret
 	#[arg(short, long)]
 	keyfile: Option<PathBuf>,
-	/// Remove input file after successful operation
-	#[arg(short, long)]
-	remove: bool,
 }
 
 fn main() -> Result<()> {
@@ -55,11 +52,6 @@ fn main() -> Result<()> {
 	let output_data = if args.decrypt { crypto::decrypt(&input_data, &secret)? } else { crypto::encrypt(&input_data, &secret)? };
 	stdout().write_all(&output_data).context("write output")?;
 	stdout().flush().context("flush stdout")?;
-	if args.remove
-		&& let Some(file) = &args.file
-	{
-		fs::remove_file(file).with_context(|| format!("remove input file '{}'", file.display()))?;
-	}
 	Ok(())
 }
 

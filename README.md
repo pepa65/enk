@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pepa65/enk/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/enk.svg)](https://crates.io/crates/enk)
 
-# enk 1.0.0
+# enk 1.0.1
 **Simple data en/decryption**
 
 * License: GPLv3.0
@@ -16,7 +16,7 @@
 
 ## Usage
 ```
-enk 1.0.0 - Simple data en/decryption
+enk 1.0.1 - Simple data en/decryption
 Usage: enk [OPTIONS] [FILE]
 Arguments:
   [FILE]  Input file (omit to read from stdin)
@@ -87,7 +87,7 @@ Then `enk` will be installed in `~/.cargo/bin/` which will need to be added to `
 * KDF Algorithm: Argon2id
 * Version: 1.3 (0x13)
 * Memory: 256 MiB (262144 KiB)
-* Time cost: 9
+* Time cost: 13
 * Parallelism: 1
 * Output: 32 bytes
 
