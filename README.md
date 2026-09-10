@@ -77,6 +77,12 @@ Only a linux-x86_64 (musl) binary available: `cargo-binstall enk`
 
 Then `enk` will be installed in `~/.cargo/bin/` which will need to be added to `PATH`!
 
+### Set magic
+Add "magic" for the `file` command:
+```sh
+echo '0 string enk1 enk v1 encrypted data, gitlab.com/pepa65/enk' |sudo tee -a /etc/magic
+```
+
 ## Encryption
 ### File format `enk1`
 * 4 bytes magic ("enk1")
