@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pepa65/enk/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/enk.svg)](https://crates.io/crates/enk)
 
-# enk 1.2.1
+# enk 1.2.2
 **Simple data en/decryption**
 
 * License: GPLv3.0
@@ -21,7 +21,7 @@
 
 ## Usage
 ```
-enk 1.2.1 - Simple data en/decryption
+enk 1.2.2 - Simple data en/decryption
 Usage: enk [OPTIONS] [FILE]
 Arguments:
   [FILE]  Input file (omit to read from stdin)
