@@ -12,6 +12,9 @@
 * Authors: github.com/pepa65, Ariel Horwitz
 * Repo: https:/github.com/pepa65/enk
 * After: https://github.com/ArielHorwitz/rhinopuffin
+* Version 1 has lower time_cost, but can be read with current version 2.
+  - To in-place convert a version-1 enk-file to version 2:
+    `tmp=$(mktemp) && enk -d FILE.enk >"$tmp" && enk "$tmp" >FILE.enk`
 * Version 0 is obsolete and incompatible with version 1
   - To decrypt `version 0` encrypted files, use `enk 0.4.2` or earlier.
   - Use `version 1` going forward for more security.
