@@ -26,14 +26,16 @@ use zeroize::Zeroizing;
 //
 // The magic & salt are authenticated as AES-GCM AAD, the nonce by AES-GCM itself
 
-const MAGIC: &[u8; 4] = b"enk1";
+const MAGIC_V1: &[u8; 4] = b"enk1";
+const MAGIC: &[u8; 4] = b"enk2";
 const SALT_SIZE: usize = 16; // 128-bit Argon2 salt
 const NONCE_SIZE: usize = 12; // 96-bit GCM nonce
 const KEY_SIZE: usize = 32; // 256-bit AES key
 const TAG_SIZE: usize = 16; // 128-bit GCM authentication tag
 const HEADER_SIZE: usize = MAGIC.len() + SALT_SIZE + NONCE_SIZE;
 const ARGON2_M_COST: u32 = 256 * 1024; // Memory cost
-const ARGON2_T_COST: u32 = 13; // Time cost
+const ARGON2_T_COST_V1: u32 = 13; // Time cost
+const ARGON2_T_COST: u32 = 60; // Time cost
 const ARGON2_P_COST: u32 = 1; // Parallelism
 
 pub fn encrypt(plaintext: &[u8], secret: &[u8]) -> Result<Vec<u8>> {
@@ -43,9 +45,9 @@ pub fn encrypt(plaintext: &[u8], secret: &[u8]) -> Result<Vec<u8>> {
 
 	let salt: [u8; SALT_SIZE] = rng().random();
 	let nonce_data: [u8; NONCE_SIZE] = rng().random();
-	let key = Key::from_secret(secret, &salt)?;
+	let key = Key::from_secret(secret, &salt, ARGON2_T_COST)?;
 	let nonce = Nonce::try_from(nonce_data.as_slice()).expect("nonce size is fixed");
-	let aad = make_aad(&salt);
+	let aad = make_aad(MAGIC, &salt);
 	let ciphertext = key.cipher.encrypt(&nonce, Payload { msg: plaintext, aad: &aad }).map_err(|e| anyhow!("encryption failed: {e}"))?;
 	let mut output = Vec::with_capacity(HEADER_SIZE + ciphertext.len());
 	output.extend_from_slice(MAGIC);
@@ -64,25 +66,28 @@ pub fn decrypt(ciphertext: &[u8], secret: &[u8]) -> Result<Vec<u8>> {
 		anyhow::bail!("encrypted data too short");
 	}
 
-	let (magic, rest) = ciphertext.split_at(MAGIC.len());
-	if magic != MAGIC {
-		anyhow::bail!("unsupported encrypted data format");
-	}
+	let (magic_data, rest) = ciphertext.split_at(MAGIC.len());
+	let magic: &[u8; MAGIC.len()] = magic_data.try_into().expect("magic size is fixed");
+	let time_cost = match magic {
+		MAGIC_V1 => ARGON2_T_COST_V1,
+		MAGIC => ARGON2_T_COST,
+		_ => anyhow::bail!("unsupported encrypted data format"),
+	};
 
 	let (salt_data, rest) = rest.split_at(SALT_SIZE);
 	let (nonce_data, encrypted_data) = rest.split_at(NONCE_SIZE);
 	let salt: &[u8; SALT_SIZE] = salt_data.try_into().expect("salt size is fixed");
 	let nonce = Nonce::try_from(nonce_data).expect("nonce size is fixed");
-	let key = Key::from_secret(secret, salt)?;
-	let aad = make_aad(salt);
+	let key = Key::from_secret(secret, salt, time_cost)?;
+	let aad = make_aad(magic, salt);
 	key.cipher
 		.decrypt(&nonce, Payload { msg: encrypted_data, aad: &aad })
 		.map_err(|_| anyhow!("decryption failed: wrong password/key or corrupted data"))
 }
 
-fn make_aad(salt: &[u8; SALT_SIZE]) -> [u8; MAGIC.len() + SALT_SIZE] {
+fn make_aad(magic: &[u8; MAGIC.len()], salt: &[u8; SALT_SIZE]) -> [u8; MAGIC.len() + SALT_SIZE] {
 	let mut aad = [0u8; MAGIC.len() + SALT_SIZE];
-	aad[..MAGIC.len()].copy_from_slice(MAGIC);
+	aad[..MAGIC.len()].copy_from_slice(magic);
 	aad[MAGIC.len()..].copy_from_slice(salt);
 	aad
 }
@@ -92,8 +97,8 @@ struct Key {
 }
 
 impl Key {
-	fn from_secret(secret: &[u8], salt: &[u8; SALT_SIZE]) -> Result<Self> {
-		let params = Params::new(ARGON2_M_COST, ARGON2_T_COST, ARGON2_P_COST, Some(KEY_SIZE)).context("invalid Argon2 parameters")?;
+	fn from_secret(secret: &[u8], salt: &[u8; SALT_SIZE], time_cost: u32) -> Result<Self> {
+		let params = Params::new(ARGON2_M_COST, time_cost, ARGON2_P_COST, Some(KEY_SIZE)).context("invalid Argon2 parameters")?;
 		let argon2 = Argon2::new(Algorithm::Argon2id, Version::V0x13, params);
 		let mut key = Zeroizing::new([0u8; KEY_SIZE]);
 		argon2.hash_password_into(secret, salt, key.as_mut()).context("key derivation failed")?;

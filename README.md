@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/pepa65/enk/blob/main/LICENSE)
 [![downloads](https://img.shields.io/crates/d/enk.svg)](https://crates.io/crates/enk)
 
-# enk 1.2.2
+# enk 2.0.0
 **Simple data en/decryption**
 
 * License: GPLv3.0
@@ -21,7 +21,7 @@
 
 ## Usage
 ```
-enk 1.2.2 - Simple data en/decryption
+enk 2.0.0 - Simple data en/decryption
 Usage: enk [OPTIONS] [FILE]
 Arguments:
   [FILE]  Input file (omit to read from stdin)
@@ -84,8 +84,8 @@ echo '0 string enk1 enk v1 encrypted data, gitlab.com/pepa65/enk' |sudo tee -a /
 ```
 
 ## Encryption
-### File format `enk1`
-* 4 bytes magic ("enk1")
+### File format `enk2`
+* 4 bytes magic ("enk2") [old format `enk1` has "enk1"]
 * 16 bytes Argon2id salt (128 bits)
 * 12 bytes AES-256-GCM nonce (96 bits)
 * N bytes AES-256-GCM ciphertext
@@ -98,7 +98,7 @@ echo '0 string enk1 enk v1 encrypted data, gitlab.com/pepa65/enk' |sudo tee -a /
 * KDF Algorithm: Argon2id
 * Version: 1.3 (0x13)
 * Memory: 256 MiB (262144 KiB)
-* Time cost: 13
+* Time cost: 60 [old format `enk1` has 13]
 * Parallelism: 1
 * Output: 32 bytes
 
