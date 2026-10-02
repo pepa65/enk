@@ -6,12 +6,13 @@
 [![downloads](https://img.shields.io/crates/d/enk.svg)](https://crates.io/crates/enk)
 
 # enk 2.0.0
-**Simple data en/decryption**
+**Simple and hard to crack data en/decryption**
 
 * License: GPLv3.0
 * Authors: github.com/pepa65, Ariel Horwitz
 * Repo: https:/github.com/pepa65/enk
 * After: https://github.com/ArielHorwitz/rhinopuffin
+* Version 2 is very costly to crack: 60 rounds of Argon2id on 256 MiB
 * Version 1 has lower time_cost, but can be read with current version 2.
   - To in-place convert a version-1 enk-file to version 2:
     `tmp=$(mktemp) && enk -d FILE.enk >"$tmp" && enk "$tmp" >FILE.enk`
@@ -24,7 +25,7 @@
 
 ## Usage
 ```
-enk 2.0.0 - Simple data en/decryption
+enk 2.0.0 - Simple and hard to crack data en/decryption
 Usage: enk [OPTIONS] [FILE]
 Arguments:
   [FILE]  Input file (omit to read from stdin)
