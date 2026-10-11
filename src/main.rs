@@ -51,7 +51,7 @@ struct Args {
 fn main() -> Result<()> {
 	let args = Args::parse();
 	if args.password && args.file.is_none() {
-		anyhow::bail!("-p/--password requires an input file");
+		anyhow::bail!("Using -p/--password requires that an input file be used for the data");
 	}
 
 	if args.password && args.keyfile.is_some() {
